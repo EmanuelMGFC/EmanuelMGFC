@@ -84,8 +84,36 @@ class Csa extends Widget_Base{
            
             $tamanho=sizeof($obj->data)-1;
             for($i=0;$i<=$tamanho;$i++){
-                echo($obj->data[$i]->attributes->nome);
-                echo("<br>");
+                ?>
+                    <style>
+                        #csa{
+                            width:100%;
+                            block-size: fit-content;
+                        }
+                        .brasil{
+                            display:flex;
+                            flex-wrap:wrap;
+                            gap: 1em;
+                            
+                        }
+                        .brasil>*{
+                            
+                        }
+                        dl.csas_attributes{
+                            border:solid 1px black;
+                            display:inline-block;
+                            margin: auto;
+                        }
+                    </style>
+                    <dl class="csas_attributes">
+                        <dd><?php echo($obj->data[$i]->attributes->tipo);?></dd>
+                        <dd><?php echo($obj->data[$i]->attributes->nome);?></dd>
+                        <dd><?php echo($obj->data[$i]->attributes->cidade);?></dd>
+                        <dd><?php echo($obj->data[$i]->attributes->estado);?></dd>
+                        <dd><?php echo($obj->data[$i]->attributes->telefone);?></dd>
+                        <dd><?php echo($obj->data[$i]->attributes->site);?></dd>
+                    </dl>
+                <?php
             }
             
         }
@@ -107,19 +135,25 @@ class Csa extends Widget_Base{
         ?>
             <section id="csa">
                 <?php
-                    foreach($estados as $estado){
-                        echo('<a class="estado"  style="background: black;" href="?estado='.$estado.'#csa"> ');
-                        echo("$estado");
-                        echo(' </a>');
-                    }
-                    
+                    ?>
+                        <div class="brasil">
+                            <?php
+                                foreach($estados as $estado){
+                                    echo('<a class="estado"  style="background: black;" href="?estado='.$estado.'#csa"> ');
+                                    echo("$estado");
+                                    echo(' </a>');
+                                }
+                            ?>
+                        </div>
+                    <?php
+                    if(isset($_GET['estado'])){
+                        $filtrado = clicou($_GET['estado']);
+                        montar_card_csa($filtrado);
+                   }
                 ?>
             </section>
        <?php
-       if(isset($_GET['estado'])){
-            $filtrado = clicou($_GET['estado']);
-            montar_card_csa($filtrado);
-       }
+       
     }
     /*preview editor*/
     protected function content_template()
