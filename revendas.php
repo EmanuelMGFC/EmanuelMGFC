@@ -253,8 +253,9 @@ class Revendas extends Widget_Base{
                             $tem_haver_pesquisa=preg_match("/".$filtros["q"]."/i",$obj->nome_fantasia); 
                         }
 
-                        if($tem_haver_pesquisa){
-                            if (isset($filtros["linha_hdm"])&& $obj->linha_hdm){
+                            if($tem_haver_pesquisa){
+                                montar_card($obj);
+                            }elseif (isset($filtros["linha_hdm"])&& $obj->linha_hdm){
                                 montar_card($obj);
                             }elseif (isset($filtros["linha_diesel"])&& $obj->linha_diesel){
                                 montar_card($obj);
@@ -265,7 +266,7 @@ class Revendas extends Widget_Base{
                             }else{
                                continue;
                             }
-                        }
+                        
                     }
                 ?>
             </section>
