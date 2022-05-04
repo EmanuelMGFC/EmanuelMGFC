@@ -255,13 +255,17 @@ class Revendas extends Widget_Base{
 
                             if($tem_haver_pesquisa){
                                 montar_card($obj);
-                            }elseif (isset($filtros["linha_hdm"])&& $obj->linha_hdm){
+                            }
+                            if (isset($filtros["linha_hdm"])&& $obj->linha_hdm){
                                 montar_card($obj);
-                            }elseif (isset($filtros["linha_diesel"])&& $obj->linha_diesel){
+                            }
+                            if (isset($filtros["linha_diesel"])&& $obj->linha_diesel){
                                 montar_card($obj);
-                            }elseif (isset($filtros["linha_automotiva"])&& $obj->linha_automotiva){
+                            }
+                            if (isset($filtros["linha_automotiva"])&& $obj->linha_automotiva){
                                 montar_card($obj);
-                            }elseif(isset($filtros["todos"])){
+                            }
+                            if(isset($filtros["todos"])){
                                 montar_card($obj);
                             }else{
                                continue;

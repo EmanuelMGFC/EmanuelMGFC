@@ -90,15 +90,7 @@ class Csa extends Widget_Base{
                             width:100%;
                             block-size: fit-content;
                         }
-                        .brasil{
-                            display:flex;
-                            flex-wrap:wrap;
-                            gap: 1em;
-                            
-                        }
-                        .brasil>*{
-                            
-                        }
+                        
                         dl.csas_attributes{
                             border:solid 1px black;
                             display:inline-block;
