@@ -88,34 +88,72 @@ class Revendas2 extends Widget_Base{
                         "linha_hdm",
                         "linha_diesel",
                     );
-                    $nao_marcou_nenhuma;
-                    if(is_null($data["todos"])){
-                        foreach($linhas as $linha){
-                            if(is_null($data[$linha])){
-                                $data["todos"]=true;
-                            }else{
-                                $data["todos"]=false;
-                                break;
+                    if (is_null($data)) {
+                        echo(" ");
+                    }else{
+
+                        $nao_marcou_nenhuma;
+                        if(is_null($data["todos"])){
+                            foreach($linhas as $linha){
+                                if(is_null($data[$linha])){
+                                    $data["todos"]=true;
+                                }else{
+                                    $data["todos"]=false;
+                                    break;
+                                }
                             }
                         }
-                    }
-                    if($data["todos"]){
-                        foreach($linhas as $linha){
-                            $data[$linha]=true;
+                        if($data["todos"]){
+                            foreach($linhas as $linha){
+                                $data[$linha]=true;
+                            }
                         }
-                    }
-           
-                    $resposta =wp_remote_get("http://localhost:1337/api/revendas?filters[$");
-                    $corpo=$resposta['body'];
-                    $corpo_em_php= json_decode($corpo);
-                    $data_do_corpo=$corpo_em_php->data;
-        
-                    $quantidade_de_respostas= sizeof($data_do_corpo);
-                    if($quantidade_de_respostas==0){
-                        echo("não encontrou nada");
-                    }else{
-                        foreach($data_do_corpo as $valor){
-                            echo($valor->attributes->nome_fantasia);
+                        /*criar url*/
+    
+                        $url_com_linhas_selecionadas="http://localhost:1337/api/revendas?";
+                        $contador_de_linhas =0;
+                        foreach($linhas as $linha){
+                            if($data[$linha]){
+                                $url_com_linhas_selecionadas .= "filters[$"."or][".$contador_de_linhas."][".$linha."][$"."eq]=".$data[$linha];
+                                $url_com_linhas_selecionadas .= "&";
+                                $contador_de_linhas=$contador_de_linhas+1;
+                            }
+                        }
+                        substr($url_com_linhas_selecionadas, 0, -1);
+    
+                        /*add estado ou estado*/
+                        $url_com_linhas_selecionadas_e_local;
+                        /*verificar se tem algum dado em q*/
+                        if($data["q"]==""){
+                            $url_com_linhas_selecionadas_e_local=$url_com_linhas_selecionadas;
+                        }else{
+                            $url_com_linhas_selecionadas_e_local = $url_com_linhas_selecionadas."&filters[$"."or][0][estado][$"."eq]=".$data["q"]."&filters[$"."or][1][cidade][$"."eq]=".$data["q"];
+                        }
+                        
+    
+                        $resposta =wp_remote_get($url_com_linhas_selecionadas_e_local);
+                        $corpo=$resposta['body'];
+                        $corpo_em_php= json_decode($corpo);
+                        $data_do_corpo=$corpo_em_php->data;
+            
+                        $quantidade_de_respostas= sizeof($data_do_corpo);
+                        if($quantidade_de_respostas==0){
+                            echo("sem resultados 😔");
+                        }else{
+                            foreach($data_do_corpo as $valor){
+                                echo($valor->attributes->nome_fantasia);
+                                echo($valor->attributes->linha_automotiva?"AUTOMOTIVA":"");
+                                echo($valor->attributes->linha_diesel?"diesel":"");
+                                echo($valor->attributes->linha_hdm?"hdm":"");
+                                echo($valor->attributes->endereco);
+                                echo(",");
+                                echo($valor->attributes->numero);
+                                echo($valor->attributes->CEP);
+                                echo($valor->attributes->cidade);
+                                echo($valor->attributes->estado);
+                                echo($valor->attributes->numero_de_telefone);
+                                echo("<br>");
+                            }
                         }
                     }
                 ?>
