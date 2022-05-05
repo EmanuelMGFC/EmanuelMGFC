@@ -141,18 +141,35 @@ class Revendas2 extends Widget_Base{
                             echo("sem resultados 😔");
                         }else{
                             foreach($data_do_corpo as $valor){
-                                echo($valor->attributes->nome_fantasia);
-                                echo($valor->attributes->linha_automotiva?"AUTOMOTIVA":"");
-                                echo($valor->attributes->linha_diesel?"diesel":"");
-                                echo($valor->attributes->linha_hdm?"hdm":"");
-                                echo($valor->attributes->endereco);
-                                echo(",");
-                                echo($valor->attributes->numero);
-                                echo($valor->attributes->CEP);
-                                echo($valor->attributes->cidade);
-                                echo($valor->attributes->estado);
-                                echo($valor->attributes->numero_de_telefone);
-                                echo("<br>");
+                                ?>
+                                    <div class="card">
+                                        <?php echo($valor->attributes->nome_fantasia);?>
+                                        
+                                        <p id="linha">
+                                            <?php
+                                                if($valor->attributes->linha_automotiva):
+                                                    echo("<span>Automotiva</span>");
+                                                endif;
+                                                if($valor->attributes->linha_diesel):
+                                                    echo("<span>Diesel</span>");
+                                                endif;
+                                                if($valor->attributes->linha_hdm):
+                                                    echo("<span>HDM</span>");
+                                                endif;
+                                            ?>
+                                        </p>
+                                        <p><?php echo($valor->attributes->endereco.",".$valor->attributes->numero);?></p>
+                                        <p><?php echo($valor->attributes->CEP);?></p>
+                                        <p><?php echo($valor->attributes->cidade);?></p>
+                                        <p><?php echo($valor->attributes->estado);?></p>
+                                       <p>
+                                        <?php
+                                            echo($valor->attributes->numero_de_telefone);
+                                            echo("<br>");
+                                        ?> 
+                                       </p> 
+                                    </div>
+                                <?php
                             }
                         }
                     }
