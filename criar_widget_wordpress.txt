@@ -1,0 +1,32 @@
+O que é preciso para o desenvolvimento de widgets?
+
+O que é necessário saber para criar um widget? Nessa primeira etapa
+é preciso conhecer as ferramentas necessárias para montá-lo. 
+
+Para definir as funções, use a classe WP_Widget, que é considerada padrão da API. 
+A classe disponibiliza aproximadamente 20 funções diferentes. 
+Não há um limite de funções para adicionar. Avalie quais são necessárias para o que precisa. 
+
+Porém, quatro funções são primordiais e deve ter em qualquer widget. Elas estão nos tópicos abaixo.
+
+ 
+Método __construct()
+
+Essa função será a base de criação do widget. Não à toa ele é chamado de construtor. É ele quem vai dar sustentação para a construção da ferramenta.
+
+ 
+Método widget()
+
+A função que irá determinar o conteúdo do widget. Provavelmente, é a função mais importante.
+
+ 
+Método form()
+
+A função que irá determinar as configurações do widget no painel do WordPress.
+
+ 
+Método update()
+
+Toda ferramenta online precisa de atualizações ao longo do tempo. É essa função que vai permitir que o widget seja atualizado sempre que preciso. 
+
+https://studiovisual.com.br/wordpress/desenvolvimento/como-criar-widget-wordpress

@@ -9,7 +9,7 @@ class Revendas2 extends Widget_Base{
         return 'revenda2';
     }
     public function get_title(){
-        return 'Revendas 2';
+        return 'Revendas ';
     }
     /*icone do widget*/
     public function get_icon()
@@ -31,12 +31,38 @@ class Revendas2 extends Widget_Base{
             'label'=> esc_html__( 'Content', 'plugin-name' ),
             'tab'=> \Elementor\Controls_Manager::TAB_CONTENT,
         ]
-    );            
+    );
+        $this->add_control(
+            'placeholder_search',
+            [
+                'label'=>'Dica barra de pesquisa',
+                'type'=> \Elementor\Controls_Manager::TEXT,
+                'default'=>'Digite um Estado ou Cidade',
+            ]
+        );          
         /*finaliza a seção de controles conteudo*/
+        $this->end_controls_section();
+        /*inicia um ceção de controles de estilo*/
+        $this->start_controls_section(
+            'style',
+            [
+                'label'=>'Style',
+                'tab'=> \Elementor\Controls_Manager::TAB_STYLE,
+            ]
+        );
+        $this->add_group_control(
+            \Elementor\Group_Control_Border::get_type(),
+            [
+                'name'=>'border',
+                'label'=>'borda dos cards',
+                'selector'=>'{{WRAPPER}} #revendas>.card',
+            ]
+        );
         $this->end_controls_section();
     }
     protected function render()
     {
+        $configuracoes = $this->get_settings_for_display();
         ?>
            <!--formulario de busca, ele usa o metodo post e a ação retorna os dados para a mesma pagina-->
            <form action="#revendas" method="post" id="formulario" name="formulario">
@@ -53,7 +79,7 @@ class Revendas2 extends Widget_Base{
                 <input type="checkbox" name="todos" id="todos">
                 <br>
                 <label for="q">Localidade</label>
-                <input type="search" placeholder="digite uma cidade ou estado..." name="q" id="q">
+                <input type="search" placeholder="<?php echo($configuracoes['placeholder_search'])?>" name="q" id="q">
                 <button type="submit"  name="buscar" id="buscar">Buscar</button>
             </form>
             <!--estilos -->
@@ -64,7 +90,6 @@ class Revendas2 extends Widget_Base{
                     gap: 1em;
                 }
                 .card{
-                    border: solid 1px grey;
                     padding:5px;
                 }
                 .card>#linha>span~*::before{
@@ -177,6 +202,7 @@ class Revendas2 extends Widget_Base{
             </section>
         <?php
     }
+    
 
 }
 

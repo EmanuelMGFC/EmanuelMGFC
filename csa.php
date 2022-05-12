@@ -49,12 +49,12 @@ class Csa extends Widget_Base{
         );
 
         $this->add_control(
-            'color-state',
+            'color-state_hover',
             [
-                'label' => 'Cor do Brasil quando passar o mouse',
+                'label' => 'Cor do Brasil<br>quando passar<br>o mouse',
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'selectors' =>[
-                    '{{WRAPPER}} .brasil path:hover'=>'fill: {{VALUE}}',
+                    '{{WRAPPER}} .brasil path:hover '=>'fill: {{VALUE}}',
                 ],
             ]   
         );
