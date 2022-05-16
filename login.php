@@ -1,5 +1,6 @@
 <?php
 
+
 /*
     a classe Login deriva da classe WP_Widget, que é a classe base do wordpress de widgets
 */
@@ -43,53 +44,83 @@ class Login extends WP_Widget {
         dessa forma tendo que passar os parametros:
             $args(array) Exibe os argumentos incluindo before_title, after_title, before_widget e after_widget.
             $instance(array) As configurações para a instância específica do widget
-             
-    */
-
-    public function widget($args, $instance){
-       ?>
-            <button onClick="pegar_cnpj()">a</button>
+            
+            */
+            
+            public function widget($args, $instance){
+                ?>
+            
+            <button class="fazer_login" id="fazer_login"><?php echo($instance['title'])?></button>
+          
             <style>
-                .login_formulario_csa{
+                .modal_login{
                     position: fixed;
                     display:none;
-                    box-shadow: 1,0,0,1 rgba(0,0,0,1);
-                    top:50vh;
+                    top:30vh;
                     bottom:50vh;
                     left: 50vh;
                     right:50vh;
+                    z-index: 11111111;
                 }
-                .login_formulario_csa>fieldset{
+                
+                .modal_login>.formulario_login_csa>fieldset{
                     background-color:white;
                 }
-                .login_formulario_csa>fieldset>button.fechar{
-                    position:absolute;
-                    top:0;
-                    right:0;
-                    background-color:white;
+                .modal_login button.fechar{
+                    position: absolute;
+                    top: 0.8em;
+                    right: 0;
+                    background-color: white;
+                    box-sizing: border-box;
+                    height: auto;
+                    width: 20%;
+                    margin: 2px;
+                    text-align:center;
+                    color:black;
+                    float: left;
+                    display: inline-block;
+                    cursor:pointer;
                 }
+                .modal_login>button.fechar:hover{
+                    background-color:rgb(224,224,224);
+                }
+                .modal_ativo{
+                    display:block;
+                }
+               
             </style>
-            <form action="#" method="post" id="formulario_csa" class="login_formulario_csa">
-                <fieldset>
-
-                    <legend><?php echo($instance['title'])?></legend>
-                    <label for="cnpj">CNPJ</label>
-                    <input type="text" name="cnpj">
-                    <input type="submit" value="enviar">
-                    <button class="fechar" onClick="fechar()">X</button>
-                </fieldset>
-            </form>
-            <script>
-                function pegar_cnpj() {
-                    const formulario= document.getElementById("formulario_csa")
-                    formulario.style.visibility = "block"
-                }
-                function fechar(){
-                    const formulario= document.getElementById("formulario_csa")
-                    formulario.style.visibility = "none"
-                }
-            </script>
+            <div id="modal_login" class="modal_login">
+                <form action="#" method="post" id="formulario_csa" class="formulario_login_csa">
+                    <fieldset>
+    
+                        <legend>Login CSA</legend>
+                        <label for="cnpj">CNPJ</label>
+                        <input type="text" id="cnpj">
+                        <input type="submit" value="enviar">
+                        
+                    </fieldset>
+                </form>
+                <button id="fechar" class="fechar">X</button>
+                <script>
+                
+                    const btn_fazer_login =document.getElementById("fazer_login")
+                    function add_class_ativo() {
+                        const modal = document.getElementById("modal_login")
+                        modal.classList.toggle('modal_ativo')
+                    }
+                    btn_fazer_login.addEventListener('click', add_class_ativo)
+                    
+                    const btn_fechar_modal = document.getElementById("fechar")
+                    function remove_class_ativo() {
+                        const modal = document.getElementById("modal_login")
+                        modal.classList.remove('modal_ativo')
+                    }
+                    btn_fechar_modal.addEventListener('click', remove_class_ativo)
+                </script>
+            </div>
        <?php
+
+       
     }
     /*  
         Método form()
@@ -106,10 +137,11 @@ class Login extends WP_Widget {
         $instance = wp_parse_args( (array) $instance, array( 'title' => '' ) );
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Titulo:' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
 		</p>
 		<?php
+
     }
     /*   
         Método update()
