@@ -66,11 +66,18 @@ class Csa extends Widget_Base{
     /*mostrar widget para o usuario final*/
     protected function render()
     {
-
-        $api_em_json=wp_remote_get("http://localhost:1337/api/csas");
+        $token='56b910bc820c209c86574cb4425db223e330717c8a6a6a1aed75e84983178dd97ef9b122c3744fd2df44bf4b780232e87591977149605cb44e0d6a2de12f405ee53c23f497fe6da14edba7d1f19933a6a9c583dcac0faab955792804c6a926070639b3b1f3fca6d90a1983f41a7190524a37168ca964d039b889104a20cfbbbd';
+        $argumentos = array(
+            'method'=> 'GET',
+            'headers'=>array(
+                'authorization'=> 'bearer '.$token,
+                'Content-Type' => 'application/json; charset=utf-8',
+            )
+        );    
+        $api_em_json=wp_remote_get("http://localhost:1337/api/csas", $argumentos);
         $corpo_da_resposta=$api_em_json['body'];
         $api_em_php=json_decode($corpo_da_resposta);
-
+        
         $estados_json_csa = file_get_contents(__DIR__.'\scripts_dependecies\json\estados_csa.json');
         $estados_php_csa = json_decode($estados_json_csa);
         $estados_brasil= $estados_php_csa->estados;
@@ -95,16 +102,17 @@ class Csa extends Widget_Base{
             
         }
 
-        function get_api_to_php(String $url)
+        function get_api_to_php(String $url, $argumentos)
         {
-            $api_em_json=wp_remote_get($url);
+            
+            $api_em_json=wp_remote_get($url, $argumentos);
             $corpo_da_resposta=$api_em_json['body'];
             $api_em_php=json_decode($corpo_da_resposta);
             return $api_em_php;
         }
-        function clicou($estado_recebido){
+        function clicou($estado_recebido, $argumentos){
             $url_estado_filtrado="http://localhost:1337/api/csas?filters[estado][$"."eq]="."$estado_recebido";
-            return get_api_to_php($url_estado_filtrado);
+            return get_api_to_php($url_estado_filtrado, $argumentos);
         }
         
         
@@ -165,7 +173,7 @@ class Csa extends Widget_Base{
             <section id="csa">            
                 <?php
                     if(isset($_GET['estado'])){
-                        $filtrado = clicou($_GET['estado']);
+                        $filtrado = clicou($_GET['estado'], $argumentos);
                         montar_card_csa($filtrado);
                    }
                 ?>

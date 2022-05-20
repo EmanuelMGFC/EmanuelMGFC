@@ -71,7 +71,7 @@ class Revendas2 extends Widget_Base{
 
                 <label for="linha_hdm">Linha HDM</label>
                 <input type="checkbox" name="linha_hdm" id="linha_hdm">
-
+                
                 <label for="linha_diesel">Linha diesel</label>
                 <input type="checkbox" name="linha_diesel" id="linha_diesel">
 
@@ -116,7 +116,7 @@ class Revendas2 extends Widget_Base{
                     if (is_null($data)) {
                         echo(" ");
                     }else{
-
+                        
                         $nao_marcou_nenhuma;
                         if(is_null($data["todos"])){
                             foreach($linhas as $linha){
@@ -134,7 +134,7 @@ class Revendas2 extends Widget_Base{
                             }
                         }
                         /*criar url*/
-    
+                        
                         $url_com_linhas_selecionadas="http://localhost:1337/api/revendas?";
                         $contador_de_linhas =0;
                         foreach($linhas as $linha){
@@ -155,8 +155,17 @@ class Revendas2 extends Widget_Base{
                             $url_com_linhas_selecionadas_e_local = $url_com_linhas_selecionadas."&filters[$"."or][0][estado][$"."eq]=".$data["q"]."&filters[$"."or][1][cidade][$"."eq]=".$data["q"];
                         }
                         
-    
-                        $resposta =wp_remote_get($url_com_linhas_selecionadas_e_local);
+                        
+                        $token='56b910bc820c209c86574cb4425db223e330717c8a6a6a1aed75e84983178dd97ef9b122c3744fd2df44bf4b780232e87591977149605cb44e0d6a2de12f405ee53c23f497fe6da14edba7d1f19933a6a9c583dcac0faab955792804c6a926070639b3b1f3fca6d90a1983f41a7190524a37168ca964d039b889104a20cfbbbd';
+                        $argumentos = array(
+                            'method'=> 'GET',
+                            'headers'=>array(
+                                'authorization'=> 'bearer '.$token,
+                                'Content-Type' => 'application/json; charset=utf-8',
+                            )
+                        );
+                        
+                        $resposta =wp_remote_get($url_com_linhas_selecionadas_e_local, $argumentos);
                         $corpo=$resposta['body'];
                         $corpo_em_php= json_decode($corpo);
                         $data_do_corpo=$corpo_em_php->data;

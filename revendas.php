@@ -283,7 +283,12 @@ class Revendas extends Widget_Base{
     /*preview editor*/
     protected function content_template()
     {
-        $response = wp_remote_get("http://localhost:1337/api/revendas");
+        $response = wp_safe_remote_get("http://localhost:1337/api/revendas", array(
+            'headers'=>array(
+                "Authorization"=> "Bearer 6d3111f713e2965089067ce6fbfeae3227879c65f637be10d42f5a978228fdffc54eab244352deb9926742ac6cfb61df0260f151342779a9a8a354e1c4e682c44fbf82b29d42685ab7122552175726c30294cc174d593236fe4d230d46aab1992233412d85be6d575d94456a79af6d5bf1a30fe9457a3470966c82afe5dfff49",
+                'Content-Type' => 'application/json; charset=utf-8',
+            )
+        ));
         $body=$response['body'];
         $data=json_decode($body);
         $api=$data->data;

@@ -47,80 +47,139 @@ class Login extends WP_Widget {
             
             */
             
-            public function widget($args, $instance){
-                ?>
-            
-            <button class="fazer_login" id="fazer_login"><?php echo($instance['title'])?></button>
-          
-            <style>
-                .modal_login{
-                    position: fixed;
-                    display:none;
-                    top:30vh;
-                    bottom:50vh;
-                    left: 50vh;
-                    right:50vh;
-                    z-index: 11111111;
-                }
+    public function widget($args, $instance){
+            ?>
+        
+                <button class="fazer_login" id="fazer_login"><?php echo($instance['title'])?></button>
                 
-                .modal_login>.formulario_login_csa>fieldset{
-                    background-color:white;
-                }
-                .modal_login button.fechar{
-                    position: absolute;
-                    top: 0.8em;
-                    right: 0;
-                    background-color: white;
-                    box-sizing: border-box;
-                    height: auto;
-                    width: 20%;
-                    margin: 2px;
-                    text-align:center;
-                    color:black;
-                    float: left;
-                    display: inline-block;
-                    cursor:pointer;
-                }
-                .modal_login>button.fechar:hover{
-                    background-color:rgb(224,224,224);
-                }
-                .modal_ativo{
-                    display:block;
-                }
-               
-            </style>
-            <div id="modal_login" class="modal_login">
-                <form action="#" method="post" id="formulario_csa" class="formulario_login_csa">
-                    <fieldset>
-    
-                        <legend>Login CSA</legend>
-                        <label for="cnpj">CNPJ</label>
-                        <input type="text" id="cnpj">
-                        <input type="submit" value="enviar">
-                        
-                    </fieldset>
-                </form>
-                <button id="fechar" class="fechar">X</button>
-                <script>
-                
-                    const btn_fazer_login =document.getElementById("fazer_login")
-                    function add_class_ativo() {
-                        const modal = document.getElementById("modal_login")
-                        modal.classList.toggle('modal_ativo')
+                <style>
+                    .modal_login{
+                        position: fixed;
+                        display:none;
+                        top:30vh;
+                        bottom:50vh;
+                        left: 50vh;
+                        right:50vh;
+                        z-index: 11111111;
                     }
-                    btn_fazer_login.addEventListener('click', add_class_ativo)
                     
-                    const btn_fechar_modal = document.getElementById("fechar")
-                    function remove_class_ativo() {
-                        const modal = document.getElementById("modal_login")
-                        modal.classList.remove('modal_ativo')
+                    .modal_login>.formulario_login_csa>fieldset{
+                        background-color:white;
                     }
-                    btn_fechar_modal.addEventListener('click', remove_class_ativo)
-                </script>
-            </div>
-       <?php
+                    .modal_login button.fechar{
+                        position: absolute;
+                        top: 0.8em;
+                        right: 0;
+                        background-color: white;
+                        box-sizing: border-box;
+                        height: auto;
+                        width: 20%;
+                        margin: 2px;
+                        text-align:center;
+                        color:black;
+                        float: left;
+                        display: inline-block;
+                        cursor:pointer;
+                    }
+                    .modal_login>button.fechar:hover{
+                        background-color:rgb(224,224,224);
+                    }
+                    .modal_ativo{
+                        display:block;
+                    }
+                
+                </style>
+                <div id="modal_login" class="modal_login">
+                    <form method="post"  action="" id="formulario_csa" class="formulario_login_csa">
+                        <fieldset>
+        
+                            <legend>Login CSA</legend>
+                            <label for="cnpj_form_modal">CNPJ</label>
+                            <input type="text" id="cnpj_form_modal" placeholder="11.111.111/1111-11" name="cnpj_form_modal" maxlength="18" required>
+                           
+                            <input type="submit" value="enviar">
+                            
+                        </fieldset>
+                    </form>
+                    <button id="fechar" class="fechar">X</button>
+                    <script>
+                    
+                        const btn_fazer_login =document.getElementById("fazer_login")
+                        function add_class_ativo() {
+                            const modal = document.getElementById("modal_login")
+                            modal.classList.toggle('modal_ativo')
+                        }
+                        btn_fazer_login.addEventListener('click', add_class_ativo)
+                        
+                        const btn_fechar_modal = document.getElementById("fechar")
+                        function remove_class_ativo() {
+                            const modal = document.getElementById("modal_login")
+                            modal.classList.remove('modal_ativo')
+                        }
+                        btn_fechar_modal.addEventListener('click', remove_class_ativo)
 
-       
+                        const cnpj = document.getElementById("cnpj_form_modal")
+                        cnpj.addEventListener('keyup',()=>{
+                            if(cnpj.value.length == 2 || cnpj.value.length == 6){
+                                cnpj.value +='.'
+                            }
+                            if(cnpj.value.length == 10){
+                                cnpj.value +='/'
+                            }
+                            if(cnpj.value.length == 15){
+                                cnpj.value +='-'
+                            }
+
+                        })
+                    </script>
+                    
+                </div>
+        <?php
+
+        $token='56b910bc820c209c86574cb4425db223e330717c8a6a6a1aed75e84983178dd97ef9b122c3744fd2df44bf4b780232e87591977149605cb44e0d6a2de12f405ee53c23f497fe6da14edba7d1f19933a6a9c583dcac0faab955792804c6a926070639b3b1f3fca6d90a1983f41a7190524a37168ca964d039b889104a20cfbbbd';
+        $argumentos = array(
+            'method'=> 'GET',
+            'headers'=>array(
+                'authorization'=> 'bearer '.$token,
+                'Content-Type' => 'application/json; charset=utf-8',
+            )
+        );
+
+            
+        $urlds= $_SERVER['REQUEST_URI'];
+        $url_formulario_cnpj="/wordpress/formulario-de-solicitacao-para-analise-biagio-turbos/";
+        $cnpj=filter_input(INPUT_POST,'cnpj_form_modal', FILTER_SANITIZE_SPECIAL_CHARS);
+
+
+        $api_em_json = wp_remote_get('http://localhost:1337/api/csas?filters%5Bcnpj%5D%5B$eq%5D='.$cnpj, $argumentos);
+        $corpo_do_json = $api_em_json['body'];
+        $corpo_json_php= json_decode($corpo_do_json);
+        $data= $corpo_json_php->data;
+
+        $errors= array();
+        
+        if (empty($data)) {
+            $errors[]="<li>usuario não existe</li>";
+            
+        }
+
+        function mostrar_erros($errors){
+            foreach($errors as $error){
+                echo("$error");
+            }
+        }
+      
+        if(empty($errors)){
+            session_start();
+            $_SESSION['data']=password_hash(serialize($data[0]), PASSWORD_DEFAULT);
+            $_SESSION['logado']=true;
+            $_SESSION['cnpj'] = base64_encode($data[0]->attributes->cnpj);
+            session_create_id();
+            session_encode();
+            header('Location: '.$url_formulario_cnpj);
+            die();
+        }
+      
     }
     /*  
         Método form()
