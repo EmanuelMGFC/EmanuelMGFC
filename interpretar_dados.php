@@ -10,10 +10,10 @@ class Interpretar_Dados extends Widget_Base{
     }
     public function get_title()
     {
-        return 'Interpretar dados Login';
+        return 'Bloqueador de pagina';
     }
     public function get_icon(){
-        return 'fa fa-data';
+        return 'fa fa-lock';
     }
     
     protected function register_controls(){
@@ -53,7 +53,6 @@ class Interpretar_Dados extends Widget_Base{
             header("Location: /wordpress");
             die();
         }
-       
     }
     public function content_template()
     {
